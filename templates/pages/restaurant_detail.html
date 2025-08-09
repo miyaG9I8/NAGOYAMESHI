@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+ 
+{% block main %}
+ 
+<h2>{{object.name}}</h2>
+<p>店舗名  ラーメン1</p>
+<p>説明　　{{object.description}}</p>
+<p>価格帯　　{{object.price}}</p>
+<p>住所　　{{object.address}}</p>
+<p>郵便番号　　{{object.post_code}}</p>
+<p>営業開始時間　　{{object.start_time}}</p>
+<p>営業終了時間　　{{object.end_time}}</p>
+<p>定休日　　{{object.closed_day}}</p>
+<p>電話番号　　{{object.phone}}</p>
+<form action="/cart/add/" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="item_pk" value="{{object.pk}}">
+  <p><input type="number" name="quantity" value="1" max="{{object.stock}}"> 点</p>
+  <p><button type="submit" class="btn btn-success">Add to cart</button></p>
+</form>
+ 
+{% endblock %}
