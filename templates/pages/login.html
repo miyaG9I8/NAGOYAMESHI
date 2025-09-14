@@ -13,7 +13,7 @@
                 <label for="id_username" class="contact_label">メールアドレス:</label>
             </th>
             <td>
-                <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="off" maxlength="254" required="" id="id_username" data-nlok-ref-guid="9d0821cd-dd0d-4e70-d38c-8621a91ad4f3" class="contact_textbox">
+                <input type="text" name="username" autocomplete="off" required="" id="id_username" data-nlok-ref-guid="9d0821cd-dd0d-4e70-d38c-8621a91ad4f3" class="contact_textbox">
             </td>
 
         </tr>
@@ -32,15 +32,14 @@
         <input class="btn btn-outline-warning" type="submit" value="ログイン" id="search_button">
     </div>
   </form>
+  <br>
 
 
 
 <div class="create_account">
-    <div  style="margin-right: 10px;">
-        <a href="{% url 'signup' %}"><input class="btn btn-outline-warning" type="submit" value="アカウントをお持ちでない方"></a>
-    </div>
-    <div>
-        <a href="{% url 'password_reset' %}"><input class="btn btn-outline-warning" type="submit" value="パスワードを忘れた方"></a>
+    <div  style="margin-right: 10px;">   
+        <a href="{% url 'password_reset' %}"><input class="btn btn-outline-warning" type="submit" value="パスワードをお忘れの方はこちら"></a><br><br>
+        <a href="{% url 'signup' %}"><input class="btn btn-outline-warning" type="submit" value="アカウントをお持ちでない方はこちら"></a>
     </div>
 </div>
        

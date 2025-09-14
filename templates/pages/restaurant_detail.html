@@ -1,22 +1,56 @@
 {% extends 'base.html' %}
- 
+
 {% block main %}
- 
-<h2>{{object.name}}</h2>
-<p>店舗名  ラーメン1</p>
-<p>説明　　{{object.description}}</p>
-<p>価格帯　　{{object.price}}</p>
-<p>住所　　{{object.address}}</p>
-<p>郵便番号　　{{object.post_code}}</p>
-<p>営業開始時間　　{{object.start_time}}</p>
-<p>営業終了時間　　{{object.end_time}}</p>
-<p>定休日　　{{object.closed_day}}</p>
-<p>電話番号　　{{object.phone}}</p>
-<form action="/cart/add/" method="POST">
-  {% csrf_token %}
-  <input type="hidden" name="item_pk" value="{{object.pk}}">
-  <p><input type="number" name="quantity" value="1" max="{{object.stock}}"> 点</p>
-  <p><button type="submit" class="btn btn-success">Add to cart</button></p>
-</form>
- 
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2>{{ object.name }}</h2>
+      <div class="bg-white border overflow-hidden">
+        <img src="/{{ object.image }}" width="100%">
+      </div>
+    
+    <table style="margin: 0 auto; text-align: left; border-spacing: 10px;">
+        <tr>
+            <th>店舗名</th>
+            <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+            <th>説明</th>
+            <td>{{ object.description }}</td>
+        </tr>
+        <tr>
+            <th>価格帯</th>
+            <td>{{ object.price }}</td>
+        </tr>
+        <tr>
+            <th>住所</th>
+            <td>{{ object.address }}</td>
+        </tr>
+        <tr>
+            <th>郵便番号</th>
+            <td>{{ object.post_code }}</td>
+        </tr>
+        <tr>
+            <th>営業開始時間</th>
+            <td>{{ object.start_time }}</td>
+        </tr>
+        <tr>
+            <th>営業終了時間</th>
+            <td>{{ object.end_time }}</td>
+        </tr>
+        <tr>
+            <th>定休日</th>
+            <td>{{ object.closed_day }}</td>
+        </tr>
+        <tr>
+            <th>電話番号</th>
+            <td>{{ object.phone }}</td>
+        </tr>
+    </table>
+
+    <form action="/cart/add/" method="POST" style="margin-top: 20px;">
+        {% csrf_token %}
+        <input type="hidden" name="item_pk" value="{{ object.pk }}">
+         <input class="btn btn-outline-warning" type="submit" value="お気に入り登録" >
+        <!--<p><input type="number" name="quantity" value="1" max="{{ object.stock }}"> 点</p>-->
+    </form>
+</div>
 {% endblock %}

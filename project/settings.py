@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "nagoyameshi",
+    "stripe"
 ]
 
 LOGIN_REDIRECT_URL = "/"
@@ -142,3 +143,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # カスタムユーザモデル
 AUTH_USER_MODEL = "nagoyameshi.CustomUser"
+
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_URL = '/logout/'
+
+LOGOUT_REDIRECT_URL = '/login/'
+
+#Stripe API KEY
+STRIPE_API_SECRET_KEY = env.str("STRIPE_API_SECRET_KEY")
+

@@ -4,9 +4,8 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 import uuid
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
-
-#from django.dispatch import receiver
-#from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 #カスタムユーザモデル
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -47,6 +46,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ("女性","女性"),
         ("その他","その他"),
     ]
+    
     gender          = models.CharField(verbose_name="性別", max_length=3, choices=gender_choice, null=True, blank=True)
     birthday        = models.DateField(verbose_name="生年月日", null=True, blank=True)
 
@@ -77,3 +77,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     # createsuperuserをするとき、入力をするフィールド
     REQUIRED_FIELDS = [ "username" ]
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        CustomUser, primary_key=True, on_delete=models.CASCADE)
+    name = models.CharField(default='', blank=True, max_length=50)
+    zipcode = models.CharField(default='', blank=True, max_length=8)
+    email = models.CharField(default='', blank=True, max_length=50)
+    #prefecture = models.CharField(default='', blank=True, max_length=50)
+    #city = models.CharField(default='', blank=True, max_length=50)
+    address = models.CharField(default='', blank=True, max_length=50)
+    #address2 = models.CharField(default='', blank=True, max_length=50)
+    tel = models.CharField(default='', blank=True, max_length=15)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+# OneToOneField を同時に作成
+@receiver(post_save, sender=CustomUser)
+def create_onetoone(sender, **kwargs):
+    if kwargs['created']:
+        Profile.objects.create(user=kwargs['instance'])
+
+
+

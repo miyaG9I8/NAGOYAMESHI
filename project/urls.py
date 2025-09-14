@@ -17,14 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from nagoyameshi import views
+from django.contrib.auth.views import LogoutView 
+from nagoyameshi.views.account_views import SignupView, PremiumView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     #Account
-    path("signup/", views.signup, name="signup"),
-    path("login/", views.login, name="login"),
-    path("logout/", views.logout, name="logout"),
+    path("signup/", SignupView.as_view(), name="signup"),
+    path("signup_premium/", PremiumView.as_view(), name="signup_premium"),
+    path("login/", views.login, name="login"),  #loginとsignupもlogout・profileの書きたに統一した方がいいかも
+    path("logout/", views.logout, name="logout"), 
+    path('profile/', views.ProfileUpdateView.as_view(),name='profile'),
     path("password_change/", views.password_change, name="password_change"),
     path("password_change/done/", views.password_change_done, name="password_change_done"),
     path("password_reset/", views.password_reset, name="password_reset"),
@@ -36,7 +41,7 @@ urlpatterns = [
     path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view()),
 
     #トップページ
-    path('', views.IndexListView.as_view()),  
+    path('', views.IndexListView.as_view(),name="index" ), 
 ]
 
 
