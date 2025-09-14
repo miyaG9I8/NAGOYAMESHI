@@ -37,11 +37,11 @@ class Restaurant(models.Model):
     )  # related_name="restaurant")
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=20, blank=True)
-    #price = models.CharField(max_length=20, blank=True)
-    #post_code = models.CharField(max_length=20, blank=True)
-    #start_time = models.CharField(max_length=20, blank=True)
-    #end_time = models.CharField(max_length=20, blank=True)
-    #closed_day = models.CharField(max_length=20, blank=True)
+    price = models.CharField(max_length=20, blank=True)
+    post_code = models.CharField(max_length=20, blank=True)
+    start_time = models.CharField(max_length=20, blank=True)
+    end_time = models.CharField(max_length=20, blank=True)
+    closed_day = models.CharField(max_length=20, blank=True)
     description = models.TextField(blank=True)
     is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,17 +55,3 @@ class Restaurant(models.Model):
         return self.name
 
 
-###Udemy参考
-""" class Item(models.Model):
-    id = models.CharField(default=create_id, primary_key=True,
-                          max_length=22, editable=False)
-    name = models.CharField(default='', max_length=50)
-    description = models.TextField(default='', blank=True)
-    is_published = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(default="", blank=True,
-                              upload_to=upload_image_to)
- 
-    def __str__(self):
-        return self.name """

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+{% endblock %}
+
+{% block main %}
+
+<div class="signup_premium">
+    <h2>有料会員登録をするとできること</h2>
+    <ul class="signup_list">
+        <i class="fa-regular fa-comment" style="font-size: 70px;"></i>
+        <li>各店舗のレビュー投稿が可能</li>
+        <i class="fa-regular fa-heart" style="font-size: 70px;"></i>
+        <li>店舗お気に入り登録ができるので、行きたい店舗をリスト管理できる</li>
+        <i class="fa-regular fa-calendar-days" style="font-size: 70px;"></i>
+        <li>NAGOYAMESHIサイトからの店舗予約や予約管理が可能なので、予約管理も簡単<i class="fa-regular fa-thumbs-up"></i></li>
+    </ul> 
+</div>
+
+<div class="card-holder-info">
+    <input class="card-holder-name" type="text" name="カード名義人" placeholder="カード名義人"><br>
+    <br>
+    <input class="card-number" type="number" name="カード番号" placeholder="カード番号">
+</div>
+
+ <button type="submit" class="btn btn-primary">登録</button>
+
+
+<div class="back_top"><a href="{% url 'index' %}">トップページに戻る</a></div>
+{% endblock %}

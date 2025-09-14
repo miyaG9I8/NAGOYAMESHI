@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+ 
+{% block main %}
+<div style="text-align: center; max-width: 600px; margin: 0 auto;">
+<table style="margin: 0 auto; text-align: left; border-spacing: 10px;">
+<h2>{{object.name}}</h2>
+<p>店舗名  ラーメン1</p>
+<p>説明　　{{object.description}}</p>
+<p>価格帯　　{{object.price}}</p>
+<p>住所　　{{object.address}}</p>
+<p>郵便番号　　{{object.post_code}}</p>
+<p>営業開始時間　　{{object.start_time}}</p>
+<p>営業終了時間　　{{object.end_time}}</p>
+<p>定休日　　{{object.closed_day}}</p>
+<p>電話番号　　{{object.phone}}</p>
+<form action="/cart/add/" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="item_pk" value="{{object.pk}}">
+  <p><input type="number" name="quantity" value="1" max="{{object.stock}}"> 点</p>
+  <p><button type="submit" class="btn btn-success">お気に入り</button></p>
+</table>
+</div>
+</form>
+ 
+{% endblock %}
+
+
+----------
+premium用
+{% extends "base.html" %}
+
+{% block main %}
+
+    <div class="signup_pros">
+        <h2>有料プラン登録</h2>
+        <h4 class="signup_subtitle">有料プランに登録するとできること</h4>
+        <ul class="signup_list">
+            <li>気に入ったお店をお気に入りに登録可能</li>
+            <li>お店のレビューを投稿可能</li>
+            <li>いつでもお店の予約が可能</li>
+            <li>月額たったの300円</li>
+        </ul> 
+    </div>
+
+{% extends "nagoyameshi/base.html" %}
+{% load static %}
+

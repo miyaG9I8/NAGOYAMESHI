@@ -10,3 +10,4 @@ class IndexListView(ListView):
 class RestaurantDetailView(DetailView):
     model = Restaurant
     template_name = 'pages/restaurant_detail.html'
+

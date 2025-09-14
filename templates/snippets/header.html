@@ -1,9 +1,22 @@
-<div class="py-1 bg-dark ">
+<div class="py-1 bg-dark">
   <nav class="container d-flex flex-column flex-md-row justify-content-between">
-    <a class="py-2 text-white" href="/">VegeKet</a>
-    <a class="py-2 d-none d-md-inline-block text-white" href="/orders/">Orders</a>
-    <a class="py-2 d-none d-md-inline-block text-white" href="/profile/">Profile</a>
-    <a class="py-2 d-none d-md-inline-block text-white" href="/account/">Account</a>
-    <a class="py-2 d-none d-md-inline-block text-white" href="/cart/">Cart</a>
+    <a class="py-2 text-white" href="/">NAGOYAMESHI</a>
+    <div class="d-flex ms-md-auto">
+      {% if user.is_authenticated %}
+      <form action="{% url 'profile' %}" method="post" class="d-inline">
+        {% csrf_token %} 
+      <input class="btn py-2 d-none d-md-inline-block text-white" type="submit" value="マイページ"> 
+      </form> 
+
+      <form action="{% url 'logout' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input class="btn btn-outline-warning py-2 d-none d-md-inline-block" type="submit" value="ログアウト">
+      </form>
+      {% else %}
+      <a class="py-2 d-none d-md-inline-block text-white px-4" href="/login/">ログイン</a>
+      <a class="py-2 d-none d-md-inline-block text-white" href="/signup/">新規登録</a>
+      {% endif %}
+    </div>
   </nav>
 </div>
+

@@ -1,84 +1,107 @@
+from django.db import models
+from django.contrib.auth.models import UserManager, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.validators import UnicodeUsernameValidator
+import uuid
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from nagoyameshi.models import create_id
 
-class UserManager(BaseUserManager):
- 
-    def create_user(self, username, email, password=None):
-        if not email:
-            raise ValueError('Users must have an email address')
-        user = self.model(
-            username=username,
-            email=self.normalize_email(email),
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
- 
-    def create_superuser(self, username, email, password=None):
-        user = self.create_user(
-            username,
-            email,
-            password=password,
-        )
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
- 
- 
-class User(AbstractBaseUser):
-    id = models.CharField(default=create_id, primary_key=True, max_length=22)
-    username = models.CharField(
-        max_length=50, unique=True, blank=True, default='匿名')
-    email = models.EmailField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-    objects = UserManager()
-    USERNAME_FIELD = 'username'
+#カスタムユーザモデル
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+    username_validator  = UnicodeUsernameValidator()
+
+    # 主キーはUUID(16進数のコード)とする。
+    id          = models.UUIDField( default=uuid.uuid4, primary_key=True, editable=False )
+    username    = models.CharField(
+                    _('username'),
+                    max_length=150,
+                    unique=True,
+                    help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+                    validators=[username_validator],
+                    error_messages={
+                        'unique': _("A user with that username already exists."),
+                    },
+                )
+    customer    = models.TextField(verbose_name="有料会員", null=True, blank=True)
+
+    # _() は verbose_nameの多言語仕様
+    last_name   = models.CharField(_('last name'), max_length=150, blank=True)
+    first_name  = models.CharField(_('first name'), max_length=150, blank=True)
+
+    last_name_kana   = models.CharField(verbose_name="姓(カナ)", max_length=150, blank=True)
+    first_name_kana  = models.CharField(verbose_name="名(カナ)", max_length=150, blank=True)
+
+
+    # メールアドレスは入力必須でユニークとする。ログインに使用するため。多重登録を防ぐ。
+    email       = models.EmailField(_('email address'), unique=True)
+
+    # 
+    tel_regex       = RegexValidator(regex=r'^\d{10,11}$')
+    tel             = models.CharField(verbose_name="電話番号", max_length=11, validators=[tel_regex], blank=True, null=True)
+
+    gender_choice = [
+        ("男性","男性"),
+        ("女性","女性"),
+        ("その他","その他"),
+    ]
+    
+    gender          = models.CharField(verbose_name="性別", max_length=3, choices=gender_choice, null=True, blank=True)
+    birthday        = models.DateField(verbose_name="生年月日", null=True, blank=True)
+
+
+    is_staff    = models.BooleanField(
+                    _('staff status'),
+                    default=False,
+                    help_text=_('Designates whether the user can log into this admin site.'),
+                )
+
+    is_active   = models.BooleanField(
+                    _('active'),
+                    default=True,
+                    help_text=_(
+                        'Designates whether this user should be treated as active. '
+                        'Unselect this instead of deleting accounts.'
+                    ),
+                )
+    #date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+
+    objects     = UserManager()
+
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', ]
- 
-    def __str__(self):
-        return self.email
- 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
- 
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
- 
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_admin
- 
- 
+
+    # メールアドレスを使ってログインさせる。(管理ユーザーも)
+    #USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
+
+    # createsuperuserをするとき、入力をするフィールド
+    REQUIRED_FIELDS = [ "username" ]
+
+
 class Profile(models.Model):
     user = models.OneToOneField(
-        User, primary_key=True, on_delete=models.CASCADE)
+        CustomUser, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(default='', blank=True, max_length=50)
     zipcode = models.CharField(default='', blank=True, max_length=8)
-    prefecture = models.CharField(default='', blank=True, max_length=50)
-    city = models.CharField(default='', blank=True, max_length=50)
-    address1 = models.CharField(default='', blank=True, max_length=50)
-    address2 = models.CharField(default='', blank=True, max_length=50)
+    email = models.CharField(default='', blank=True, max_length=50)
+    #prefecture = models.CharField(default='', blank=True, max_length=50)
+    #city = models.CharField(default='', blank=True, max_length=50)
+    address = models.CharField(default='', blank=True, max_length=50)
+    #address2 = models.CharField(default='', blank=True, max_length=50)
     tel = models.CharField(default='', blank=True, max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
- 
+
     def __str__(self):
         return self.name
- 
- 
-# OneToOneFieldを同時に作成
-@receiver(post_save, sender=User)
+
+# OneToOneField を同時に作成
+@receiver(post_save, sender=CustomUser)
 def create_onetoone(sender, **kwargs):
     if kwargs['created']:
         Profile.objects.create(user=kwargs['instance'])
+
+
+
+
