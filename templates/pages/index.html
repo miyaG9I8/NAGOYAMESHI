@@ -2,9 +2,23 @@
 
 {% block main %}
 
+
 {% include 'snippets/headline.html' %}
 
 <div class="container px-5" style="max-width:100%">
+
+    <h2 style="text-align:center">店舗検索</h2>
+    <form action="{%url 'nagoyameshi:restaurant_list'%}" method="get" id="restaurant_search">
+        <div class="input-group">
+            <input class="form-control" type="text" name="search" value="{{ request.GET.search }}" placeholder="店舗検索">
+            <div class="input-group-append">
+                <input class="btn btn-outline-warning" type="submit" value="検索" class="search_button">
+            </div>
+        </div>
+    </form>
+
+
+    
 
     <div class="row my-5">
         {% for object in object_list %}
@@ -14,4 +28,8 @@
         {% endfor %}
     </div>
 </div>
+
+
+
+
 {% endblock %}
