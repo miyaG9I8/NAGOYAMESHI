@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,6 +132,11 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+#画像の設定
+MEDIA_URL = '/media/'   
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -142,7 +148,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # カスタムユーザモデル
-AUTH_USER_MODEL = "nagoyameshi.CustomUser"
+AUTH_USER_MODEL = 'nagoyameshi.CustomUser'
 
 LOGIN_URL = '/login/'
 

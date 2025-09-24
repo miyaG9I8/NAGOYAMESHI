@@ -49,6 +49,7 @@ urlpatterns = [
 ]
 
 """
+#nagoyameshi直下のurls.pyに記載した↑
 
 from django.contrib import admin
 from django.urls import path,include

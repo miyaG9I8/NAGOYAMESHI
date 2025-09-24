@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from nagoyameshi.models import Restaurant, Category, Tag
+from nagoyameshi.models import Restaurant, Category, Tag, Review
 from django.contrib.auth.models import Group
 from .models import CustomUser
 from django.utils.translation import gettext_lazy as _
@@ -34,11 +34,22 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', "customer")
     search_fields = ('username', 'first_name', 'last_name', 'email')
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display	= [ "id", 
+                        "user", 
+                        "restaurant", 
+                        "subject", 
+                        "content", 
+                        "created_at"]
+
+
+
 admin.site.register(CustomUser, CustomUserAdmin) 
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.unregister(Group)
+admin.site.register(Review)
 
 
 

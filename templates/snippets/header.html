@@ -3,12 +3,12 @@
     <a class="py-2 text-white" href="/">NAGOYAMESHI</a>
     <div class="d-flex ms-md-auto">
       {% if user.is_authenticated %}
-      <form action="{% url 'profile' %}" method="post" class="d-inline">
+      <form action="{% url 'nagoyameshi:profile' %}" method="post" class="d-inline">
         {% csrf_token %} 
       <input class="btn py-2 d-none d-md-inline-block text-white" type="submit" value="マイページ"> 
       </form> 
 
-      <form action="{% url 'logout' %}" method="post" class="d-inline">
+      <form action="{% url 'nagoyameshi:logout' %}" method="post" class="d-inline">
         {% csrf_token %}
         <input class="btn btn-outline-warning py-2 d-none d-md-inline-block" type="submit" value="ログアウト">
       </form>

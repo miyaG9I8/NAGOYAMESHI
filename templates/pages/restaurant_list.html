@@ -17,7 +17,7 @@
 {% for restaurant in restaurants %}
 <div id="restaurants">
     <a href="{% url 'nagoyameshi:restaurant' restaurant.id %}" class="restaurant_list">
-        <div id="restaurant_image"><alt="{{restaurant.name}}" ></div>
+        <div id="restaurant_image"><img src="{{ restaurant.image.url }}" alt="{{restaurant.name}}" ></div>
         <div id="restaurant_name">{{ restaurant.name }}</div>
         <div style="text-align:left"> カテゴリ: {% for category in restaurant.category_name.all %}{{ category.category_name }} {% endfor %}</div>
         <div id="restaurant_info">{{ restaurant.address }}</div>
@@ -38,9 +38,7 @@
     <a href="?page={{ restaurants.next_page_number }}">次へ</a>
     <a href="?page={{ restaurants.paginator.num_pages }}">最後 &raquo;</a>
 {% endif %}
-
-
-    {{ restaurants.number }} / {{ restaurants.paginator.num_pages }} ページ<br>
+  
     
     {% if restaurants.has_previous %}
     <a href="{{ restaurants.first_page_link }}">&laquo; 先頭</a>

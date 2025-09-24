@@ -25,6 +25,8 @@
 {% endblock %}
 
 
+
+
 ----------
 premium用
 {% extends "base.html" %}
@@ -45,3 +47,126 @@ premium用
 {% extends "nagoyameshi/base.html" %}
 {% load static %}
 
+
+
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+restaurant_detail用
+{% extends 'base.html' %}
+
+{% block main %}
+<div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2>{{ object.name }}</h2>
+      <div class="bg-white border overflow-hidden">
+        <img src="{{ restaurant.image.url }}" alt="{{ restaurant.name }}" width="100%">
+      </div>
+    
+    <table style="margin: 0 auto; text-align: left; border-spacing: 10px;">
+        <tr>
+            <th>店舗名</th>
+            <td>{{ restaurant.name }}</td>
+        </tr>
+        <tr>
+            <th>説明</th>
+            <td>{{ restaurant.description }}</td>
+        </tr>
+        <tr>
+            <th>価格帯</th>
+            <td>{{ restaurant.price }}</td>
+        </tr>
+        <tr>
+            <th>住所</th>
+            <td>{{ restaurant.address }}</td>
+        </tr>
+        <tr>
+            <th>郵便番号</th>
+            <td>{{ restaurant.post_code }}</td>
+        </tr>
+        <tr>
+            <th>営業時間</th>
+            <td>{{ restaurant.start_time }} ~ {{ restaurant.end_time }} </td>
+        <tr>
+            <th>定休日</th>
+            <td>{{ restaurant.closed_day }}</td>
+        </tr>
+        <tr>
+            <th>電話番号</th>
+            <td>{{ restaurant.phone }}</td>
+        </tr>
+    </table>
+
+    <form action="/cart/add/" method="POST" style="margin-top: 20px;">
+        {% csrf_token %}
+        <input type="hidden" name="item_pk" value="{{ object.pk }}">
+         <input class="btn btn-outline-warning" type="submit" value="お気に入り登録" >
+        <!--<p><input type="number" name="quantity" value="1" max="{{ object.stock }}"> 点</p>-->
+    </form>
+</div>
+
+<!--ーーーーーーーーーーーーーーーーー有料会員判定ーーーーーーーーーーーーーーーーーーーーーーーーー-->
+
+<!--有料会員の場合-->
+<!--{% if request.user.customer %}  -->
+<!--お気に入り登録 
+
+<form action="{% url 'nagoyameshi:favorite' %}" method="post"  class="restaurant_detail_submit">    
+    {% csrf_token %}
+    <input type="hidden" name="restaurant" value="{{ restaurant.id }}">
+    <input class="btn btn-outline-warning" type="submit" value="お気に入り登録" >
+</form><br><br>
+
+-->
+
+<!--レビュー表示-->
+<h2>レビュー一覧</h2>
+{% for review in reviews %}
+  <p>{{ review.user }}: {{ review.content }}</p>
+{% empty %}
+  <p>まだレビューはありません。</p>
+{% endfor %}
+
+<h2>レビュー投稿</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">投稿する</button>
+</form>
+
+<!---
+<h2 style="text-align: center;">レビュー内容</h2>
+{% for review in reviews %}
+<div class="review_star" style="text-align: center;">
+    <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
+    <span class="review_false_star">{% for s in review.star_icon.false_star %}<i class="far fa-star"></i>{% endfor %}</span>
+</div>
+
+    <table class="table">
+        <tr>
+            <th>アカウント名</th>
+                <td>
+                    {{ review.user.name }}
+                </td>
+        </tr>
+
+        <tr>
+            <th>件名</th>
+                <td>
+                    {{ review.subject }}
+                </td>
+        </tr>
+ 
+        <tr>
+            <th>内容</th>
+                <td>
+                    {{ review.content }}
+                </td>
+        </tr>
+        </table>
+</div><br><br>
+{% endfor %}
+-->
+
+<!--{% endif %} -->  
+
+{% endblock %}
+
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
