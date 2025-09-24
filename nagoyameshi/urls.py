@@ -20,7 +20,7 @@ urlpatterns = [
     path("reset/done/", views.password_reset_complete, name="password_reset_complete"),
 
     #Restaurant_detail
-    path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant"),  #nameを追加
+    path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant_detail"),  #nameを追加
     path('restaurant_list/', views.RestaurantListView.as_view(),name="restaurant_list"),
 
     #トップページ

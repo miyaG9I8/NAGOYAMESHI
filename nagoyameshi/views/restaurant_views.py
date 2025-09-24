@@ -1,14 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
-from nagoyameshi.models import Restaurant,Category
+from nagoyameshi.models import Restaurant,Category, Review
 from django.views import View
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib import messages
+from nagoyameshi.forms import CategoryForm,ReviewForm,RestaurantCategorySearchForm
 
-from nagoyameshi.forms import RestaurantCategorySearchForm
 
 
-#トップページに検索機能検索
+###トップページに検索機能検索
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         context = {}
@@ -42,17 +43,14 @@ class IndexView(View):
 
 index   = IndexView.as_view()
 
-#トップページに店舗を表示　→あとからトップ３の店舗を表示してもいい
+###トップページに店舗を表示　→あとからトップ３の店舗を表示してもいい
 class IndexListView(ListView):
     model = Restaurant
     template_name = 'pages/index.html'
 
-#店舗の詳細ページ
-class RestaurantDetailView(DetailView):
-    model = Restaurant
-    template_name = 'pages/restaurant_detail.html'
 
-#店舗一覧ページ
+
+###店舗一覧ページ
 class RestaurantListView(View):
      def get(self, request, *args, **kwargs):
 
@@ -127,3 +125,57 @@ restaurant_list = RestaurantListView.as_view()
 
 
 
+###店舗の詳細ページ
+class RestaurantDetailView(DetailView):
+    
+    model = Restaurant
+    template_name = 'pages/restaurant_detail.html'
+
+
+    def get(self, request, pk, *args, **kwargs):
+        restaurant = Restaurant.objects.get(id=pk)
+        reviews = Review.objects.filter(restaurant=restaurant).order_by("-created_date")
+        form = ReviewForm()
+
+        return render(request, "pages/restaurant_detail.html", {
+            "restaurant": restaurant,
+            "reviews": reviews,
+            "form": form,
+        })
+
+    def post(self, request, pk, *args, **kwargs):
+        restaurant = Restaurant.objects.get(id=pk)
+        copied = request.POST.copy()
+        copied["user"] = request.user
+        copied["restaurant"] = restaurant.id
+        form = ReviewForm(copied)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "レビューを投稿しました")
+        else:
+            messages.error(request, "投稿に失敗しました")
+
+        return redirect("nagoyameshi:restaurant_detail", pk=restaurant.id)
+
+
+
+
+    """
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        restaurant = self.get_object()
+        context["reviews"] = Review.objects.filter(restaurant=restaurant).select_related("user")
+        return context
+    """
+
+
+
+
+
+
+
+
+
+
+       
