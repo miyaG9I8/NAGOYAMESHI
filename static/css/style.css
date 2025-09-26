@@ -1,0 +1,17 @@
+/*レビューをユーザ名単位で囲む*/
+/* レビュー一覧全体 */
+.review-list {
+    margin: 30px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* 各レビューを枠で囲む */
+.review-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
