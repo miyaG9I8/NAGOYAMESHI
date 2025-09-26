@@ -59,9 +59,14 @@
 <!--レビュー表示-->
 <div style="max-width: 600px; margin: 40px auto 0 auto; text-align: center">
 	<h3>レビュー一覧</h3>
-	{% for review in reviews %}
-	<p>ユーザ名　{{ review.user }}: {{ review.content }}</p>
-	<p>評価　{{review.star}}</p>
+	<div class="review-list">
+	    {% for review in reviews %}
+		<div class="review-item">
+	    	<p>ユーザ名　{{ review.user }}</p>
+	        <p>評価　{{review.star}}</p>
+			<p>コメント　{{ review.content }}<p>
+		</div>	
+	</div>	
 	{% empty %}
 	<p>まだレビューはありません。</p>
 	{% endfor %}
