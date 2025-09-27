@@ -1,4 +1,4 @@
-from .models import CustomUser,Restaurant, Review, Category
+from .models import CustomUser,Restaurant, Review, Category,Reservation
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
@@ -32,3 +32,8 @@ class CategoryForm(forms.ModelForm):
         model	= Category
         fields	= [ "name" ]
 
+
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model   = Reservation
+        fields  = ["date","user","restaurant","people"]
