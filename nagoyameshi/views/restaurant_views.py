@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView
-from nagoyameshi.models import Restaurant,Category, Review
+from django.views.generic import ListView, DetailView, CreateView
+from nagoyameshi.models import Restaurant,Category, Review, Reservation
+from nagoyameshi.forms import CategoryForm,ReviewForm,RestaurantCategorySearchForm,ReservationForm
 from django.views import View
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
-from nagoyameshi.forms import CategoryForm,ReviewForm,RestaurantCategorySearchForm
+from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from nagoyameshi.mixins import PremiumMemberMixin
 
 
 
@@ -159,15 +161,20 @@ class RestaurantDetailView(DetailView):
         return redirect("nagoyameshi:restaurant_detail", pk=restaurant.id)
 
 
+###予約ビュー
+class ReservationView(PremiumMemberMixin, CreateView):
+    model = Reservation
+    template_name = "nagoyameshi/reservation_form.html"
+    fields = ["date", "people"]  # CreateViewでuser, restaurant は自動設定
 
+    def form_valid(self, form):
+        restaurant = get_object_or_404(Restaurant, pk=self.kwargs["pk"])
+        form.instance.restaurant = restaurant
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-    """
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        restaurant = self.get_object()
-        context["reviews"] = Review.objects.filter(restaurant=restaurant).select_related("user")
-        return context
-    """
+    def get_success_url(self):
+        return reverse_lazy("nagoyameshi:restaurant_detail", kwargs={"pk": self.kwargs["pk"]})
 
 
 
