@@ -48,11 +48,8 @@
 	<form action="/cart/add/" method="POST" style="margin-top: 20px">
 		{% csrf_token %}
 		<input type="hidden" name="item_pk" value="{{ object.pk }}" />
-		<input
-			class="btn btn-outline-warning"
-			type="submit"
-			value="お気に入り登録"
-		/>
+		<input class="btn btn-outline-warning" type="submit" value="予約"/>
+		<input class="btn btn-outline-warning" type="submit" value="お気に入り投稿"/>
 	</form>
 </div>
 
