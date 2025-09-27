@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth.views import LogoutView 
 from nagoyameshi.views.account_views import SignupView, PremiumView
+from nagoyameshi.views.restaurant_views import ReservationView
 
 app_name    = "nagoyameshi"
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     #Restaurant_detail
     path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant_detail"),  #nameを追加
     path('restaurant_list/', views.RestaurantListView.as_view(),name="restaurant_list"),
+    path("restaurant/<int:pk>/reservation/", ReservationView.as_view(), name="reservation"),
 
     #トップページ
     path('', views.IndexListView.as_view(),name="index" ), 
