@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView
-from nagoyameshi.models import Restaurant,Category, Review, Reservation
+from nagoyameshi.models import Restaurant,Category, Review, Reservation, Favorite
 from nagoyameshi.forms import CategoryForm,ReviewForm,RestaurantCategorySearchForm,ReservationForm
 from django.views import View
 from django.db.models import Q
@@ -194,9 +194,20 @@ class ReservationListView(LoginRequiredMixin, ListView):
     
 
 
+class FavoriteView(LoginRequiredMixin, View):
+
+    def post(self, request, pk, *args, **kwargs):
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        Favorite.objects.get_or_create(user=request.user, restaurant=restaurant)
+        return redirect("nagoyameshi:restaurant_detail", pk=pk)
 
 
 
+class FavoriteDeleteView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        Favorite.objects.filter(user=request.user, restaurant=restaurant).delete()
+        return redirect("nagoyameshi:restaurant_detail", pk=pk)
 
 
 
