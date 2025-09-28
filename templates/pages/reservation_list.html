@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>あなたの予約一覧</h2>
+
+{% for reservation in reservations %}
+  <div>
+    店舗: {{ reservation.restaurant.name }}<br>
+    日時: {{ reservation.date }}<br>
+    人数: {{ reservation.people }}
+  </div>
+{% empty %}
+  <p>まだ予約はありません。</p>
+{% endfor %}
+{% endblock %}
