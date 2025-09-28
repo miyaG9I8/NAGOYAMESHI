@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from nagoyameshi.models import Restaurant, Category, Tag, Review
 from django.contrib.auth.models import Group
-from .models import CustomUser
+from .models import CustomUser, Reservation
 from django.utils.translation import gettext_lazy as _
  
  
 class TagInline(admin.TabularInline):
     model = Restaurant.tags.through
- 
+
  
 class RestaurantAdmin(admin.ModelAdmin):
     inlines = [TagInline]
@@ -41,7 +41,10 @@ class ReviewAdmin(admin.ModelAdmin):
                         "subject", 
                         "content", 
                         "created_at"]
+    
 
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ("restaurant", "user", "date", "people")    
 
 
 admin.site.register(CustomUser, CustomUserAdmin) 
@@ -50,6 +53,7 @@ admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.unregister(Group)
 admin.site.register(Review)
+admin.site.register(Reservation, ReservationAdmin)
 
 
 
