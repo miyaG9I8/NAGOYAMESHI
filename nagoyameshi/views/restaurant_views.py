@@ -7,7 +7,8 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-from nagoyameshi.mixins import PremiumMemberMixin
+#from nagoyameshi.mixins import PremiumMemberMixin  #検証用に一旦コメントアウト
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -132,6 +133,7 @@ class RestaurantDetailView(DetailView):
     
     model = Restaurant
     template_name = 'pages/restaurant_detail.html'
+    context_object_name = "restaurant"   #objectをrestaurantで定義し直し
 
 
     def get(self, request, pk, *args, **kwargs):
@@ -162,9 +164,9 @@ class RestaurantDetailView(DetailView):
 
 
 ###予約ビュー
-class ReservationView(PremiumMemberMixin, CreateView):
+class ReservationView(LoginRequiredMixin, CreateView):
     model = Reservation
-    template_name = "nagoyameshi/reservation_form.html"
+    template_name = "pages/reservation_form.html"
     fields = ["date", "people"]  # CreateViewでuser, restaurant は自動設定
 
     def form_valid(self, form):
@@ -172,11 +174,23 @@ class ReservationView(PremiumMemberMixin, CreateView):
         form.instance.restaurant = restaurant
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        restaurant = get_object_or_404(Restaurant, pk=self.kwargs["pk"])
+        context["restaurant"] = restaurant
+        return context
 
     def get_success_url(self):
         return reverse_lazy("nagoyameshi:restaurant_detail", kwargs={"pk": self.kwargs["pk"]})
 
+class ReservationListView(LoginRequiredMixin, ListView):
+    model = Reservation
+    template_name = "pages/reservation_list.html"
+    context_object_name = "reservations"
 
+    def get_queryset(self):
+        return Reservation.objects.filter(user=self.request.user).order_by("date")
 
 
 

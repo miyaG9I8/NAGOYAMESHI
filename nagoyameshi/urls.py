@@ -23,7 +23,7 @@ urlpatterns = [
     #Restaurant_detail
     path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant_detail"),  #nameを追加
     path('restaurant_list/', views.RestaurantListView.as_view(),name="restaurant_list"),
-    path("restaurant/<int:pk>/reservation/", ReservationView.as_view(), name="reservation"),
+    path("restaurant/<str:pk>/reservation/", ReservationView.as_view(), name="reservation"),
 
     #トップページ
     path('', views.IndexListView.as_view(),name="index" ), 

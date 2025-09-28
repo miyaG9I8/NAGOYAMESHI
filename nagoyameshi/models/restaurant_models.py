@@ -94,6 +94,10 @@ class Reservation(models.Model):
         
         now = timezone.now()
 
+        # 検証用にrestaurantがまだセットされていない段階なら何もしないで終了
+        if not self.restaurant_id:
+            return
+
         #営業時間チェック　営業時間をご確認くださいと表示する
         start = self.restaurant.start_time
         end   = self.restaurant.end_time
