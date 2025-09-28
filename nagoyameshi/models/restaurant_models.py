@@ -105,3 +105,16 @@ class Reservation(models.Model):
         if self.date.time() < start or self.date.time() > end:
             raise ValidationError("営業時間をご確認ください")
     
+
+class Favorite(models.Model):
+    user = models.ForeignKey("nagoyameshi.CustomUser", on_delete=models.CASCADE, related_name="favorites")
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="favorites")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # 同じユーザーが同じ店を複数回登録できないようにする
+    class Meta:
+        unique_together = ("user", "restaurant")  
+
+    def __str__(self):
+        return f"{self.user.email} → {self.restaurant.name}"
+    
