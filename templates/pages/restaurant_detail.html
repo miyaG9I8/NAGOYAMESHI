@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block main %}
 <div style="max-width: 700px; margin: 0 auto; text-align: center">
-	<h2>{{ object.name }}</h2>
+	<h2>{{ restaurant.name }}</h2>         <!--object→restaurant-->
 	<div class="bg-white border overflow-hidden">
 		<img
 			src="{{ restaurant.image.url }}"
@@ -47,8 +47,9 @@
 
 	<form action="/cart/add/" method="POST" style="margin-top: 20px">
 		{% csrf_token %}
-		<input type="hidden" name="item_pk" value="{{ object.pk }}" />
-		<input class="btn btn-outline-warning" type="submit" value="予約"/>
+		<input type="hidden" name="item_pk" value="{{ restaurant.pk }}" />   <!--object→restaurant-->
+		<a href="{% url 'nagoyameshi:reservation' restaurant.pk %}">予約する</a>
+	    <!--<a href="{% url 'nagoyameshi:reservation' restaurant.pk %}" class="btn btn-primary"> -->
 		<input class="btn btn-outline-warning" type="submit" value="お気に入り投稿"/>
 	</form>
 </div>

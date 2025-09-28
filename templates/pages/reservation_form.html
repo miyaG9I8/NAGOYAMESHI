@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div style="max-width: 700px; margin: 0 auto; text-align: center; font-size: 30px;" >
+    <h2>予約フォーム</h2>
+
+    <h3>{{ restaurant.name }}</h3>  
+    <form method="post">
+      {% csrf_token %}
+      <!-- 日時入力 -->
+      <input class="form-control" 
+             type="datetime-local" 
+             name="date" 
+             placeholder="例: 2025-09-28 10:00">
+
+      <!-- 人数入力 -->
+      <input class="form-control" 
+             type="number" 
+             name="people" 
+             min="1" 
+             placeholder="人数を入力してください">
+
+      <!--{{ form.as_p }}   -->
+      <button type="submit">予約する</button>
+    </form>
+</div>    
+{% endblock %}
