@@ -21,11 +21,14 @@ urlpatterns = [
     path("reset/done/", views.password_reset_complete, name="password_reset_complete"),
 
     #RestaurantDetail
-    path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant_detail"),  #nameを追加
+    path('restaurant/<str:pk>/', views.RestaurantDetailView.as_view(),name="restaurant_detail"), 
     path('restaurant_list/', views.RestaurantListView.as_view(),name="restaurant_list"),
     path("restaurant/<str:pk>/reservation/", ReservationView.as_view(), name="reservation"),
     path("reservations/", ReservationListView.as_view(), name="reservation_list"),
-
+    path("restaurant/<str:pk>/favorite/add/", FavoriteView.as_view(), name="favorite_add"),
+    path("restaurant/<str:pk>/favorite/delete/", FavoriteDeleteView.as_view(), name="favorite_delete"),
+    
+    
     #Index
     path('', views.IndexListView.as_view(),name="index" ), 
 ]
