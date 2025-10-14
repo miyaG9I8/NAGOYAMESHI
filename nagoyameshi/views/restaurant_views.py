@@ -130,7 +130,6 @@ restaurant_list = RestaurantListView.as_view()
 
 ###店舗の詳細ページ
 class RestaurantDetailView(DetailView):
-    
     model = Restaurant
     template_name = 'pages/restaurant_detail.html'
     context_object_name = "restaurant"   #objectをrestaurantで定義し直し
