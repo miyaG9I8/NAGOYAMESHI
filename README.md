@@ -41,6 +41,12 @@ AWSエンジニアとしての業務理解を深める目的で、
 ![restaurant-review](./docs/restaurant_review.png)
 
 ##　店舗予約
+予約するボタンをクリックすると、予約フォームに飛び、日時と人数で予約を行う。
+日時はカレンダーボタンからカレンダーを表示し、予約日時を入力可能。
+
+![reservation_form](./docs/reservation_form.png)
+
+![reservation_date](./docs/reservation_date.png)
 
 ## 今後の改善点
 - お気に入り登録機能の追加
