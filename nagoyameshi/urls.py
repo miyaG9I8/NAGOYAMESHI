@@ -28,7 +28,6 @@ urlpatterns = [
     path("restaurant/<str:pk>/favorite/add/", FavoriteView.as_view(), name="favorite_add"),
     path("restaurant/<str:pk>/favorite/delete/", FavoriteDeleteView.as_view(), name="favorite_delete"),
     
-    
     #Index
     path('', views.IndexListView.as_view(),name="index" ), 
 ]
